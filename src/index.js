@@ -10,11 +10,21 @@ const port = process.env.PORT || 3000
 
 const multer = require('multer')
 const upload = multer({
-    dest: 'data'
+    dest: 'data/images',
+    limits: {
+        fileSize: 1 * 1000000
+    },
+    fileFilter(req, file, cb) {
+        if (!file.originalname.match(/\.(doc|docx)$/)) {
+            return cb(new Error('Please upload a Word document'))
+        }
+
+        cb(undefined, true)
+    }
 })
 
 app.post('/upload', upload.single('upload'), (req, res) => {
-    res.send(200)
+    res.send()
 })
 
 
